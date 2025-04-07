@@ -1,4 +1,4 @@
-
+from marslander.DescentEvent import DescentEvent
 
 class Vehicle:
     gravity = 100
@@ -47,8 +47,7 @@ class Vehicle:
 
     def compute_deltaV(self):
         # return velocity + gravity - burn amount
-        compute = self.velocity + self.gravity - self.burn
-        return compute
+        return (self.velocity + Vehicle.gravity) - self.burn
 
     def adjust_for_burn(self, burnAmount):
         # set burn to burnamount requested
@@ -58,10 +57,10 @@ class Vehicle:
         # set new velocity to result of computeDeltaV function.
         self.velocity = self.compute_deltaV()
         # subtract speed from Altitude
-        speed = self.velocity * self.tick
+        self.altitude = self.altitude - self.velocity
         # subtract burn amount fuel used from tank
-        burnAmount - self.fuel
-        pass
+        self.fuel = self.fuel - self.burn
+
 
     def still_flying(self):
         # return true if altitude is positive
@@ -75,8 +74,9 @@ class Vehicle:
 
     def get_status(self, tick):
         # create a return a new DescentEvent object
-
         # filled in with the state of the vehicle.
-        pass
+        self.check_final_status()
+        return DescentEvent(tick, self.velocity, self.fuel, self.altitude, self.flying)
+
 
 
